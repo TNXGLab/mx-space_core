@@ -77,18 +77,12 @@ export const CROSS_DOMAIN = {
   allowedOrigins: argv.allowed_origins
     ? argv.allowed_origins?.split?.(',')
     : [
-        'innei.ren',
-        '*.innei.ren',
-        'shizuri.net',
-        '*.shizuri.net',
-        'localhost:*',
-        '127.0.0.1',
-        'mbp.cc',
-        'local.innei.test',
-        '22333322.xyz',
-        '*.dev',
+        'tnxg.top',
+        '*.tnxg.top',
+        'prts.top',
+        '*.prts.top',
       ],
-
+  
   // allowedReferer: 'innei.ren',
 }
 
