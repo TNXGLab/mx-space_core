@@ -9,9 +9,9 @@ export const generateDefaultConfig: () => IConfig = () => ({
     keywords: [],
   },
   url: {
-    wsUrl: 'http://127.0.0.1:2333', // todo
-    adminUrl: 'http://127.0.0.1:2333/proxy/qaqdmin',
-    serverUrl: 'http://127.0.0.1:2333',
+    wsUrl: 'http://127.0.0.1:7896', // todo
+    adminUrl: 'http://127.0.0.1:7896/proxy/qaqdmin',
+    serverUrl: 'http://127.0.0.1:7896',
     webUrl: 'http://127.0.0.1:2323',
   },
   mailOptions: {

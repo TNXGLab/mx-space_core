@@ -68,7 +68,7 @@ if (argv.config) {
 
 const { PORT: ENV_PORT, ENABLE_CACHE_DEBUG, MX_ENCRYPT_KEY } = process.env
 
-export const PORT = argv.port || ENV_PORT || 2333
+export const PORT = argv.port || ENV_PORT || 7896
 export const API_VERSION = 2
 
 export const DEMO_MODE = argv.demo || false

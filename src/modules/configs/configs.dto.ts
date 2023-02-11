@@ -64,7 +64,7 @@ export class UrlDto {
 
   @IsAllowedUrl()
   @IsOptional()
-  @ApiProperty({ example: 'http://127.0.0.1:2333' })
+  @ApiProperty({ example: 'http://127.0.0.1:7896' })
   @JSONSchemaHalfGirdPlainField('API 地址')
   serverUrl: string
 

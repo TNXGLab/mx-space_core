@@ -101,5 +101,5 @@ client.note.proxy.something.other('123456').info.get()
 ```ts
 client.note.proxy.something.other('123456').info.toString() // /notes/something/other/123456/info
 
-client.note.proxy.something.other('123456').info.toString(true) // http://localhost:2333/notes/something/other/123456/info
+client.note.proxy.something.other('123456').info.toString(true) // http://localhost:7896/notes/something/other/123456/info
 ```

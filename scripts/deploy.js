@@ -51,7 +51,7 @@ async function main() {
   console.log('等待 8 秒')
   await sleep(8000)
   try {
-    await $`lsof -i:2333 -P -n | grep LISTEN`
+    await $`lsof -i:7896 -P -n | grep LISTEN`
     await $`pm2 save`
     cd(path.resolve(homedir(), 'mx'))
     await $`rm -rf ./run.bak`

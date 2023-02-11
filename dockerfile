@@ -17,5 +17,5 @@ COPY --from=builder /app/out .
 COPY --from=builder /app/assets ./assets
 ENV TZ=Asia/Shanghai
 
-EXPOSE 2333
+EXPOSE 7896
 CMD echo "MixSpace Server Image." && sh

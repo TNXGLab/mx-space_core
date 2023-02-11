@@ -59,7 +59,7 @@ if (argv.config) {
   Object.assign(argv, config)
 }
 
-export const PORT = process.env.PORT || 2333
+export const PORT = process.env.PORT || 7896
 export const API_VERSION = 2
 
 export const DEMO_MODE = false
@@ -76,7 +76,7 @@ export const CROSS_DOMAIN = {
         '127.0.0.1',
         'mbp.cc',
         'local.innei.test',
-        '22333322.xyz',
+        '27896322.xyz',
         '*.dev',
       ],
 

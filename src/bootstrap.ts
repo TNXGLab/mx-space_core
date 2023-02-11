@@ -19,7 +19,7 @@ import { MyLogger } from './processors/logger/logger.service'
 import { checkInit } from './utils/check-init.util'
 
 const Origin: false | string[] = Array.isArray(CROSS_DOMAIN.allowedOrigins)
-  ? [...CROSS_DOMAIN.allowedOrigins, '*.shizuri.net', '22333322.xyz']
+  ? [...CROSS_DOMAIN.allowedOrigins, '*.shizuri.net', '27896322.xyz']
   : false
 
 declare const module: any
