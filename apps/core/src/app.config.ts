@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { program } from 'commander'
+import dotenv from 'dotenv'
 import { load as yamlLoad } from 'js-yaml'
 import { machineIdSync } from 'node-machine-id'
 import type { AxiosRequestConfig } from 'axios'
@@ -10,7 +11,24 @@ import { seconds } from '@nestjs/throttler'
 import { isDebugMode, isDev } from './global/env.global'
 import { parseBooleanishValue } from './utils/tool.util'
 
-const { PORT: ENV_PORT, ALLOWED_ORIGINS, MX_ENCRYPT_KEY } = process.env
+dotenv.config()
+
+const {
+  PORT: ENV_PORT,
+  ALLOWED_ORIGINS,
+  MX_ENCRYPT_KEY,
+  MONGO_HOST,
+  MONGO_PORT,
+  MONGO_USER,
+  MONGO_PASSWORD,
+  MONGO_DATABASE,
+  MONGO_OPTIONS,
+  MONGO_CONNECTION_STRING,
+  REDIS_HOST,
+  REDIS_PORT,
+  REDIS_PASSWORD,
+  REDIS_DB,
+} = process.env
 
 const commander = program
   .option('-p, --port <number>', 'server port', ENV_PORT)
@@ -24,16 +42,16 @@ const commander = program
 
   // db
   .option('--collection_name <string>', 'mongodb collection name')
-  .option('--db_host <string>', 'mongodb database host')
-  .option('--db_port <number>', 'mongodb database port')
-  .option('--db_user <string>', 'mongodb database user')
-  .option('--db_password <string>', 'mongodb database password')
+  .option('--db_host <string>', 'mongodb database host', MONGO_HOST)
+  .option('--db_port <number>', 'mongodb database port', MONGO_PORT)
+  .option('--db_user <string>', 'mongodb database user', MONGO_USER)
+  .option('--db_password <string>', 'mongodb database password', MONGO_PASSWORD)
   .option('--db_options <string>', 'mongodb database options')
   .option('--db_connection_string <string>', 'mongodb connection string')
   // redis
-  .option('--redis_host <string>', 'redis host')
-  .option('--redis_port <number>', 'redis port')
-  .option('--redis_password <string>', 'redis password')
+  .option('--redis_host <string>', 'redis host', REDIS_HOST)
+  .option('--redis_port <number>', 'redis port', REDIS_PORT)
+  .option('--redis_password <string>', 'redis password', REDIS_PASSWORD)
   .option('--disable_cache', 'disable redis cache')
 
   // jwt
@@ -126,30 +144,33 @@ export const CROSS_DOMAIN = {
 }
 
 export const MONGO_DB = {
-  dbName: argv.collection_name || (DEMO_MODE ? 'mx-space_demo' : 'mx-space'),
-  host: argv.db_host || '127.0.0.1',
-  // host: argv.db_host || '10.0.0.33',
-  port: argv.db_port || 27017,
-  user: argv.db_user || '',
-  password: argv.db_password || '',
-  options: argv.db_options || '',
+  dbName:
+    argv.collection_name ||
+    MONGO_DATABASE ||
+    (DEMO_MODE ? 'mx-space_demo' : 'mx-space'),
+  host: argv.db_host || MONGO_HOST || '127.0.0.1',
+  port: argv.db_port || MONGO_PORT || 27017,
+  user: argv.db_user || MONGO_USER || '',
+  password: argv.db_password || MONGO_PASSWORD || '',
+  options: argv.db_options || MONGO_OPTIONS || '',
   get uri() {
     const userPassword =
       this.user && this.password ? `${this.user}:${this.password}@` : ''
     const dbOptions = this.options ? `?${this.options}` : ''
     return `mongodb://${userPassword}${this.host}:${this.port}/${this.dbName}${dbOptions}`
   },
-  customConnectionString: argv.db_connection_string,
+  customConnectionString: argv.db_connection_string || MONGO_CONNECTION_STRING,
 }
 
 export const REDIS = {
-  host: argv.redis_host || 'localhost',
-  port: argv.redis_port || 6379,
-  password: argv.redis_password || null,
-  ttl: null,
-  max: 120,
-  disableApiCache: isDev,
-  // disableApiCache: false,
+  host: argv.redis_host || REDIS_HOST || '127.0.0.1',
+  port: argv.redis_port || REDIS_PORT || 6379,
+  password: argv.redis_password || REDIS_PASSWORD || null,
+  db: argv.redis_db || REDIS_DB || 0,
+  ttl: argv.redis_ttl || process.env.REDIS_TTL || null,
+  max: argv.redis_max || process.env.REDIS_MAX || 120,
+  disableApiCache:
+    argv.disable_cache || process.env.REDIS_DISABLE_API_CACHE || isDev,
 }
 
 export const HTTP_CACHE = {

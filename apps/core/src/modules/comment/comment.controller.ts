@@ -189,6 +189,7 @@ export class CommentController {
           path: 'children',
           maxDepth: NESTED_REPLY_MAX,
         },
+        select: '+agent',
       },
     )
 
