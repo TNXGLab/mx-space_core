@@ -18,12 +18,21 @@ export class AiService {
       throw new BizException(ErrorCodeEnum.AINotEnabled, 'Key not found')
     }
 
-    return new ChatOpenAI({
-      model: openAiPreferredModel,
-      apiKey: openAiKey,
-      configuration: {
-        baseURL: openAiEndpoint || void 0,
-      },
-    })
+    try {
+      return new ChatOpenAI({
+        model: openAiPreferredModel,
+        apiKey: openAiKey,
+        configuration: {
+          baseURL: openAiEndpoint || void 0,
+        },
+      })
+    } catch (error) {
+      console.info('OpenAI API Error:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      })
+      throw error
+    }
   }
 }
