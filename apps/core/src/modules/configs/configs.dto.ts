@@ -3,15 +3,14 @@ import {
   ArrayUnique,
   IsBoolean,
   IsEmail,
-  isInt,
   IsInt,
   IsIP,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
   IsUrl,
+  Max,
   Min,
   ValidateNested,
 } from 'class-validator'
@@ -84,11 +83,11 @@ class MailOption {
   @IsInt()
   @Transform(({ value: val }) => Number.parseInt(val))
   @IsOptional()
-  @JSONSchemaNumberField('发件邮箱端口', halfFieldOption)
+  @JSONSchemaNumberField('SMTP 端口', halfFieldOption)
   port: number
   @IsUrl({ require_protocol: false })
   @IsOptional()
-  @JSONSchemaHalfGirdPlainField('发件邮箱 host')
+  @JSONSchemaHalfGirdPlainField('SMTP 主机')
   host: string
   @IsBoolean()
   @IsOptional()
@@ -104,11 +103,15 @@ export class MailOptionsDto {
   @IsEmail()
   @IsOptional()
   @JSONSchemaHalfGirdPlainField('发件邮箱地址')
+  from: string
+  @IsString()
+  @IsOptional()
+  @JSONSchemaHalfGirdPlainField('SMTP 用户名')
   user: string
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  @JSONSchemaPasswordField('发件邮箱密码', halfFieldOption)
+  @JSONSchemaPasswordField('SMTP 密码', halfFieldOption)
   @SecretField
   pass: string
 
@@ -125,6 +128,41 @@ export class CommentOptionsDto {
   @IsOptional()
   @JSONSchemaToggleField('反垃圾评论')
   antiSpam: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  @JSONSchemaToggleField('开启 AI 审核')
+  aiReview: boolean
+
+  @IsString()
+  @IsOptional()
+  @JSONSchemaPlainField('AI 审核方式', {
+    description: '默认为是非，可以选择评分',
+    'ui:options': {
+      type: 'select',
+      values: [
+        {
+          label: '是非',
+          value: 'binary',
+        },
+        {
+          label: '评分',
+          value: 'score',
+        },
+      ],
+    },
+  })
+  aiReviewType: string
+
+  @IsInt()
+  @Transform(({ value: val }) => Number.parseInt(val))
+  @Min(1)
+  @Max(10)
+  @IsOptional()
+  @JSONSchemaNumberField('AI 审核阈值', {
+    description: '分数大于多少时会被归类为垃圾评论, 范围为 1-10, 默认为 5',
+  })
+  aiReviewThreshold: number
 
   @IsBoolean()
   @IsOptional()
@@ -207,6 +245,20 @@ export class BaiduSearchOptionsDto {
   @IsNotEmpty()
   @JSONSchemaPasswordField('Token')
   @SecretField
+  token?: string
+}
+
+@JSONSchema({ title: 'Bing推送设定' })
+export class BingSearchOptionsDto {
+  @IsOptional()
+  @IsBoolean()
+  @JSONSchemaToggleField('开启推送')
+  enable?: boolean
+
+  @IsOptional()
+  @IsString()
+  @SecretField
+  @JSONSchemaPasswordField('Bing API密钥')
   token?: string
 }
 
