@@ -5,15 +5,18 @@
   "main": "dist/index.cjs",
   "exports": {
     ".": "./dist/index.cjs",
-    "./zx-global": "./zx-global.cjs",
-    "./auth": "./dist/auth.cjs"
+    "./auth": "./dist/auth.cjs",
+    "./zod": "./dist/zod.cjs",
+    "./install-pkg": "./dist/install-pkg.cjs"
   },
   "scripts": {
     "build": "tsup"
   },
   "devDependencies": {
-    "better-auth": "1.2.5",
+    "@antfu/install-pkg": "1.1.0",
+    "better-auth": "1.2.9",
     "nanoid": "5.1.5",
+    "zod": "3.25.63",
     "zx": "7.2.3"
   }
 }

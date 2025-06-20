@@ -16,9 +16,7 @@ const RegMap = {
 @Injectable({})
 export class TextMacroService {
   private readonly logger: Logger
-  constructor(
-    private readonly configService: ConfigsService, // @Inject(REQUEST) private readonly request: Request,
-  ) {
+  constructor(private readonly configService: ConfigsService) {
     this.logger = new Logger(TextMacroService.name)
   }
 
@@ -143,13 +141,13 @@ export class TextMacroService {
         }
         if (condition.search(RegMap.$) != -1) {
           const variable = condition
-            .replace(RegMap.$, '$1')
+            .replaceAll(RegMap.$, '$1')
             .replaceAll(/\s/g, '')
           return model[variable] ?? extraContext[variable]
         }
 
         if (condition.search(RegMap['#']) != -1) {
-          const functions = condition.replace(RegMap['#'], '$1')
+          const functions = condition.replaceAll(RegMap['#'], '$1')
 
           if (typeof cacheMap[functions] != 'undefined') {
             return cacheMap[functions]

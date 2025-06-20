@@ -12,33 +12,27 @@ export class AiService {
 
   constructor(private readonly configService: ConfigsService) {}
 
-  public async getOpenAiChain() {
+  public async getOpenAiChain(options?: { maxTokens?: number }) {
     const {
       ai: { openAiKey, openAiEndpoint, openAiPreferredModel },
+      url: { webUrl },
     } = await this.configService.waitForConfigReady()
     if (!openAiKey) {
       this.logger.warn('OpenAI API key not found')
       throw new BizException(ErrorCodeEnum.AINotEnabled, 'Key not found')
     }
 
-    try {
-      this.logger.debug(
-        `Initializing OpenAI chain with model: ${openAiPreferredModel}`,
-      )
-      return new ChatOpenAI({
-        model: openAiPreferredModel,
-        apiKey: openAiKey,
-        configuration: {
-          baseURL: openAiEndpoint || void 0,
+    return new ChatOpenAI({
+      model: openAiPreferredModel,
+      apiKey: openAiKey,
+      configuration: {
+        baseURL: openAiEndpoint || void 0,
+        defaultHeaders: {
+          'X-Title': 'Mix Space AI Client',
+          'HTTP-Referer': webUrl,
         },
-      })
-    } catch (error) {
-      this.logger.error('OpenAI API Error:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-      })
-      throw error
-    }
+      },
+      maxTokens: options?.maxTokens,
+    })
   }
 }

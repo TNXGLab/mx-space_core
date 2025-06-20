@@ -1,3 +1,14 @@
 packages:
   - packages/*
   - apps/*
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@swc/core'
+  - esbuild
+  - mongodb-memory-server
+  - redis-memory-server
+  - sharp
+  - simple-git-hooks
+  - unrs-resolver
+patchedDependencies:
+  tinyexec@1.0.1: patches/tinyexec@1.0.1.patch
